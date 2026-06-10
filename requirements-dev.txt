@@ -1,0 +1,4 @@
+# Dépendances pour lancer les tests des 4 services (module 7).
+# Installez d'abord les requirements.txt de chaque service, puis celui-ci.
+pytest==8.3.4
+httpx==0.28.1

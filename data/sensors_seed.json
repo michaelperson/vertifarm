@@ -1,0 +1,9 @@
+{
+  "description": "Relevés de capteurs initiaux pour les 3 fermes VertiFarm. Utilisé comme jeu de données de départ et pour les tests.",
+  "farms": ["lln", "gand", "bxl"],
+  "readings": [
+    { "farm_id": "lln",  "ph": 6.0, "water_liters": 118.5, "energy_kwh": 12.4, "temperature_c": 21.5, "humidity_pct": 63.0 },
+    { "farm_id": "gand", "ph": 6.2, "water_liters": 142.0, "energy_kwh": 15.1, "temperature_c": 22.0, "humidity_pct": 66.5 },
+    { "farm_id": "bxl",  "ph": 5.8, "water_liters": 97.0,  "energy_kwh": 10.8, "temperature_c": 20.5, "humidity_pct": 60.0 }
+  ]
+}

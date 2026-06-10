@@ -1,0 +1,12 @@
+{
+  "description": "Catalogue de la boutique VertiFarm (circuit court). Prix en EUR, par 100 g sauf mention.",
+  "products": [
+    { "id": "basilic",   "name": "Basilic frais",      "farm_id": "lln",  "price_eur": 2.20, "unit": "botte" },
+    { "id": "roquette",  "name": "Roquette sauvage",   "farm_id": "lln",  "price_eur": 1.90, "unit": "100g" },
+    { "id": "mache",     "name": "Mâche",              "farm_id": "lln",  "price_eur": 2.10, "unit": "100g" },
+    { "id": "coriandre", "name": "Coriandre",          "farm_id": "gand", "price_eur": 2.00, "unit": "botte" },
+    { "id": "epinard",   "name": "Jeunes épinards",    "farm_id": "gand", "price_eur": 2.40, "unit": "100g" },
+    { "id": "menthe",    "name": "Menthe",             "farm_id": "bxl",  "price_eur": 1.80, "unit": "botte" },
+    { "id": "laitue",    "name": "Laitue Batavia",     "farm_id": "bxl",  "price_eur": 1.50, "unit": "pièce" }
+  ]
+}

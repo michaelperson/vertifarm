@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VertiFarm — Boutique circuit court</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>🌱 VertiFarm</h1>
+    <p>Légumes &amp; herbes ultra-frais, cultivés en ville. −90&nbsp;% d'eau, zéro pesticide.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Récolte du jour</h2>
+      <div id="products" class="grid">Chargement…</div>
+    </section>
+
+    <section>
+      <h2>Mon panier</h2>
+      <ul id="cart"></ul>
+      <label>Votre nom / restaurant :
+        <input id="customer" type="text" placeholder="Ex : Restaurant Le Potager" />
+      </label>
+      <button id="checkout">Commander pour demain</button>
+      <p id="message"></p>
+    </section>
+  </main>
+
+  <footer>VertiFarm SA — démonstration pédagogique (formation DevOps).</footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>
