@@ -30,25 +30,82 @@ Chaque service est **résilient** : si un voisin est indisponible, il dégrade p
 
 ## Lancer en local (sans Docker)
 
-Pré-requis : Python 3.10+.
+### Pré-requis
+
+Un seul outil : [**uv**](https://docs.astral.sh/uv/) (≥ 0.12). Python n'a **pas** besoin
+d'être installé : uv télécharge la bonne version (3.12 par défaut).
+
+| OS | Installer uv | Terminal pour lancer le script |
+|---|---|---|
+| Windows | `winget install --id astral-sh.uv -e` (puis rouvrir le terminal) | **Git Bash** ou **WSL** |
+| Linux / macOS | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | terminal habituel |
+
+### Tout lancer
 
 ```bash
-# 1) installer les dépendances de chaque service
-for s in control-api telemetry green-score shop; do
-  pip install -r services/$s/requirements.txt
-done
-
-# 2) tout lancer
 ./run_local.sh
 ```
 
+Depuis PowerShell :
+
+```powershell
+& "C:\Program Files\Git\bin\bash.exe" ./run_local.sh
+```
+
+Au **premier lancement**, le script crée l'environnement virtuel `.venv`, installe en
+une seule résolution les dépendances des 4 services (+ `requirements-dev.txt`), puis
+démarre les services dans l'ordre de leurs dépendances (`telemetry` → `green-score` et
+`control-api` → `shop`) en attendant que chacun réponde sur `/health`.
+Les lancements suivants sont immédiats : réinstallation uniquement si un
+`requirements*.txt` a changé. **Ctrl+C** arrête proprement les 4 services.
+
 Puis ouvrir la boutique : http://localhost:8000 — et les API : http://localhost:8001/docs, etc.
+
+### Options
+
+| Commande | Effet |
+|---|---|
+| `PYTHON_VERSION=3.13 ./run_local.sh` | autre version de Python (sinon `.python-version`, sinon 3.12) |
+| `FORCE_INSTALL=1 ./run_local.sh` | force la réinstallation des dépendances |
+| `RESET_VENV=1 ./run_local.sh` | supprime et recrée `.venv` |
+
+### Lancer un seul service (développement)
+
+```bash
+source .venv/Scripts/activate      # Windows (Git Bash) — Linux/macOS : source .venv/bin/activate
+cd services/telemetry
+uvicorn app.main:app --port 8002 --reload
+```
+
+Les URL des voisins se règlent par variables d'environnement : `TELEMETRY_URL`
+(défaut `http://localhost:8002`) et `GREENSCORE_URL` (défaut `http://localhost:8003`).
+
+### Dépannage
+
+| Symptôme | Cause | Solution |
+|---|---|---|
+| `$'\r': command not found` | script converti en CRLF au clone | vérifier `.gitattributes`, puis `git rm --cached run_local.sh && git checkout run_local.sh` |
+| `uvicorn` / `uv` non reconnu | uv absent, ou terminal pas rouvert après installation | installer uv, rouvrir le terminal, relancer `./run_local.sh` |
+| `Le port 800x est déjà occupé` | instance précédente orpheline | le script affiche la commande pour libérer le port |
+| `.venv existe mais ne correspond pas à cette plateforme` | même dossier utilisé depuis Windows **et** WSL | recréation automatique ; éviter d'alterner |
+| `Échec de la résolution des dépendances` | conflit de versions entre deux services | comparer les `services/*/requirements.txt` |
 
 ## Lancer les tests (module 7)
 
+Les dépendances de test sont installées par `run_local.sh` (lancez-le une fois).
+Ensuite, avec l'environnement activé :
+
 ```bash
-pip install -r requirements-dev.txt
+source .venv/Scripts/activate      # Windows (Git Bash) — Linux/macOS : source .venv/bin/activate
 cd services/control-api && python -m pytest    # idem pour les 3 autres services
+```
+
+Ou les 4 services d'un coup, depuis la racine :
+
+```bash
+for s in control-api telemetry green-score shop; do
+  (cd services/$s && python -m pytest -q) || exit 1
+done
 ```
 
 27 tests fournis (8 + 5 + 7 + 7). Les élèves les **exécutent** et les branchent comme
@@ -59,8 +116,10 @@ cd services/control-api && python -m pytest    # idem pour les 3 autres services
 ```
 vertifarm/
 ├── README.md                ← ce fichier
-├── run_local.sh             ← lance les 4 services en local
+├── run_local.sh             ← lance les 4 services en local (installe tout via uv)
 ├── requirements-dev.txt     ← dépendances de test (pytest)
+├── .gitignore               ← exclut .venv, caches, secrets (.env), états Terraform…
+├── .gitattributes           ← force les fins de ligne LF sur les scripts shell
 ├── data/                    ← jeux de données de référence (capteurs, catalogue)
 └── services/
     ├── control-api/   (app/, tests/, requirements.txt, README.md)
@@ -80,5 +139,3 @@ les élèves produisent eux-mêmes :
 - scan **OWASP ZAP** sur la boutique (module 7)
 - pipelines **Jenkins** et **Azure DevOps** (module 8)
 - dashboards **Grafana** + alertes **Alertmanager** sur les `/metrics` (module 9)
-
-

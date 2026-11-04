@@ -100,13 +100,13 @@ sys.exit(0 if s.connect_ex(("127.0.0.1", int(sys.argv[1]))) == 0 else 1)
 PY
 }
 
-wait_ready() {  # attend que /docs réponde (max ~15 s)
+wait_ready() {  # attend que /health réponde (max ~15 s)
   "$VENV_PY" - "$1" <<'PY'
 import sys, time, urllib.request
 port = int(sys.argv[1])
 for _ in range(30):
     try:
-        urllib.request.urlopen(f"http://127.0.0.1:{port}/docs", timeout=1)
+        urllib.request.urlopen(f"http://127.0.0.1:{port}/health", timeout=1)
         sys.exit(0)
     except Exception:
         time.sleep(0.5)
