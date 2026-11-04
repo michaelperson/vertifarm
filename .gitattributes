@@ -1,0 +1,3 @@
+# Scripts shell : toujours en LF, même après un clone sous Windows
+# (sinon : "$'\r': command not found")
+*.sh text eol=lf

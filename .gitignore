@@ -1,0 +1,88 @@
+# =============================================================================
+# VertiFarm : .gitignore
+# Monorepo Python (FastAPI) · 4 services · uv · Windows / Linux / macOS
+# =============================================================================
+
+# --- Environnements virtuels ----------------------------------------------------
+.venv/
+venv/
+env/
+**/.venv/
+
+# --- Python : bytecode & builds ---------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.whl
+
+# --- Tests, qualité, couverture ---------------------------------------------------
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+junit*.xml
+.tox/
+.nox/
+
+# --- Secrets & configuration locale -----------------------------------------------
+# Les .env contiennent des valeurs locales (et potentiellement des secrets).
+# Le modèle documenté, lui, EST versionné.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+
+# --- Logs & données d'exécution ---------------------------------------------------
+*.log
+logs/
+*.pid
+# Base SQLite locale éventuelle (décommenter si les services en créent une à l'exécution)
+# *.db
+# *.sqlite3
+
+# --- Infra (modules 5+ : déploiement par les élèves) ------------------------------
+# Docker : rien à ignorer (Dockerfile et compose.yaml SONT versionnés)
+docker-compose.override.yml
+compose.override.yaml
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+.terraform.tfstate.lock.info
+# Bicep / ARM : paramètres locaux
+*.local.bicepparam
+
+# --- IDE & éditeurs -----------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.iml
+*.swp
+*~
+
+# --- Systèmes d'exploitation ------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# --- À NE PAS ignorer (rappel) ------------------------------------------------------
+# uv.lock          → versionné (reproductibilité)
+# .python-version  → versionné (même Python pour tous)
+# requirements*.txt, pyproject.toml, run_local.sh, .gitattributes → versionnés
